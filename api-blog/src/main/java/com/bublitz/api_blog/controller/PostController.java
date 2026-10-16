@@ -111,5 +111,25 @@ public class PostController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
+	// // EDITA UM POST PELO ID
+    @Operation(summary = "Atualiza um post")
+    @PutMapping("/{id}")
+    public ResponseEntity<PostResponseDto> updatePost(
+            @PathVariable UUID id, 
+            @RequestBody @Valid PostRequestDto dto) {
+        
+        PostResponseDto response = postService.updatePost(id, dto);
+        return ResponseEntity.ok(response);
+    }
+
+    // // DELETA UM POST PELO ID
+    @Operation(summary = "Deleta um post")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable UUID id) {
+        
+        postService.deletePost(id);
+        return ResponseEntity.noContent().build(); // Retorna Status 204
+    }
+	
 	
 }

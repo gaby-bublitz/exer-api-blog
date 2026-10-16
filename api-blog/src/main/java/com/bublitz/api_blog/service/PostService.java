@@ -26,6 +26,12 @@ public interface PostService {
 	// SALVA UM POST NO BANCO
 	PostResponseDto createPost(PostRequestDto dto);
 	
+	// EDITA UM POST PELO ID
+	PostResponseDto updatePost(UUID id, PostRequestDto dto);
+
+	// DELETA UM POST PELO ID
+	void deletePost(UUID id);
+	
 	// TRATA COMENTÁRIOS DOS POSTS
 	ComentarioResponseDto addComentario(UUID postId, ComentarioRequestDto dto);
 	

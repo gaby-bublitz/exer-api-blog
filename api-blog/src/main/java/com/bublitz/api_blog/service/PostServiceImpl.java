@@ -100,6 +100,39 @@ public class PostServiceImpl implements PostService {
 		// return new PageImpl<>(response, pageable, posts.getTotalElements());
 	}
 	
+	// // EDITA POST PELO ID
+    @Override
+    @Transactional
+    public PostResponseDto updatePost(UUID id, PostRequestDto dto) {
+        // Busca o post ou lança a exceção customizada integrada ao MessageService
+        PostModel post = postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(
+                        messageService.getMessage("post.nao.encontrado", id)));
+        
+        // Atualiza os campos com os dados vindos do DTO
+        post.setTitulo(dto.titulo());
+        post.setTexto(dto.texto());
+        post.setAutor(dto.autor());
+        
+        // Salva as alterações no banco
+        PostModel postAtualizado = postRepository.save(post);
+        
+        // Retorna convertido pelo seu mapper
+        return postMapper.toDto(postAtualizado);
+    }
+
+    // // DELETA POST PELO ID
+    @Override
+    @Transactional
+    public void deletePost(UUID id) {
+        // Verifica se o post realmente existe antes de apagar
+        if (!postRepository.existsById(id)) {
+            throw new PostNotFoundException(
+                    messageService.getMessage("post.nao.encontrado", id));
+        }
+        
+        postRepository.deleteById(id);
+    }
 	
 	//
 	
